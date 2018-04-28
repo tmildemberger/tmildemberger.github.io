@@ -114,6 +114,15 @@ function setup() {
             num++;
           }
         }
+        obtidas = []
+        n_obtidas = []
+        for(i = 0; i < figs.length; i++){
+          if(figs[i].jatenho == true){
+            obtidas.push(i);
+          } else{
+            n_obtidas.push(i);
+          }
+        }
       }
       // obtidas = snapshot.val().obtidas;
       // console.log(obtidas);
@@ -136,16 +145,6 @@ function setup() {
 
   select = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length, max_y+2*sy, 4*draw_str[0].length,
   2*sy, draw_str[0]);
-
-  obtidas = []
-  n_obtidas = []
-  for(i = 0; i < figs.length; i++){
-    if(figs[i].jatenho == true){
-      obtidas.push(i);
-    } else{
-      n_obtidas.push(i);
-    }
-  }
 }
 
 function draw() {
