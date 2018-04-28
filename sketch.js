@@ -106,8 +106,17 @@ function setup() {
   // obtidas = localStorage.getItem("obtidas");
   firebase.database().ref('figurinhas-obtidas').once('value')
     .then(function(snapshot){
-      obtidas = snapshot.val().obtidas;
-      console.log(obtidas);
+      if(snapshot.val()){
+        obtidas = snapshot.val().obtidas;
+        for(i = 0; i < obtidas.length; i++){
+          if(figs[obtidas[i]]){
+            figs[obtidas[i]].jatenho = true;
+            num++;
+          }
+        }
+      }
+      // obtidas = snapshot.val().obtidas;
+      // console.log(obtidas);
     }, function(error){console.log('error');})
   // if(obtidas){
   //   obtidas = obtidas.split(",");
@@ -119,89 +128,89 @@ function setup() {
   //   }
   // // }
   
-  // var max_y = figs[figs.length-1].y;
-  // but = new Button(max_x+sx/2-w/8, max_y+2*sy, w/8, 2*sy, "Salvar");
+  var max_y = figs[figs.length-1].y;
+  but = new Button(max_x+sx/2-w/8, max_y+2*sy, w/8, 2*sy, "Salvar");
 
-  // faltantes = new Button(10+sx/2, max_y+2*sy, 6*falt_str.length, sy, falt_str);
-  // temos = new Button(10+sx/2, max_y+3*sy, 6*tem_str.length, sy, tem_str);
+  faltantes = new Button(10+sx/2, max_y+2*sy, 6*falt_str.length, sy, falt_str);
+  temos = new Button(10+sx/2, max_y+3*sy, 6*tem_str.length, sy, tem_str);
 
-  // select = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length, max_y+2*sy, 4*draw_str[0].length,
-  // 2*sy, draw_str[0]);
+  select = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length, max_y+2*sy, 4*draw_str[0].length,
+  2*sy, draw_str[0]);
 
-  // obtidas = []
-  // n_obtidas = []
-  // for(i = 0; i < figs.length; i++){
-  //   if(figs[i].jatenho == true){
-  //     obtidas.push(i);
-  //   } else{
-  //     n_obtidas.push(i);
-  //   }
-  // }
+  obtidas = []
+  n_obtidas = []
+  for(i = 0; i < figs.length; i++){
+    if(figs[i].jatenho == true){
+      obtidas.push(i);
+    } else{
+      n_obtidas.push(i);
+    }
+  }
 }
 
 function draw() {
   background(190, 50, 255);
 
-  // if(draw_all === 1){
-  //   for(i = 0; i < numero_de_figurinhas; i++){
-  //     figs[i].render();
-  //   }
-  // } else{
-  //   for(i = 0; i < n_obtidas.length; i++){
-  //     figs[n_obtidas[i]].render(figs[i].x, figs[i].y);
-  //   }
-  // }
+  if(draw_all === 1){
+    for(i = 0; i < numero_de_figurinhas; i++){
+      figs[i].render();
+    }
+  } else{
+    for(i = 0; i < n_obtidas.length; i++){
+      figs[n_obtidas[i]].render(figs[i].x, figs[i].y);
+    }
+  }
 
-  // but.render();
+  but.render();
 
-  // falt_str = "Faltam " + (numero_de_figurinhas - num) + " figurinhas";
-  // faltantes.render(falt_str);
-  // tem_str = "Temos " + num + " figurinhas";
-  // temos.render(tem_str);
+  falt_str = "Faltam " + (numero_de_figurinhas - num) + " figurinhas";
+  faltantes.render(falt_str);
+  tem_str = "Temos " + num + " figurinhas";
+  temos.render(tem_str);
 
-  // select.render();
+  select.render();
   // // console.log(num);
   // // noLoop();
 }
 
-// function mousePressed(){
-//   var x = Math.round(mouseX);
-//   var y = Math.round(mouseY);
-//   console.log(x);
-//   console.log(y);
-//   for(i = 0; i < figs.length; i++){
-//     if(figs[i].clicked(x, y)){
-//       figs[i].jatenho = !figs[i].jatenho;
-//       if(figs[i].jatenho)
-//         num++;
-//       else
-//         num--;
-//     }
-//   }
-//   if(but.clicked(x, y)){
-//     obtidas = []
-//     n_obtidas = []
-//     for(i = 0; i < figs.length; i++){
-//       if(figs[i].jatenho == true){
-//         obtidas.push(i);
-//       } else{
-//         n_obtidas.push(i);
-//       }
-//     }
-//     // localStorage.setItem("obtidas", obtidas);
-//     saveToFirebase(obtidas);
-//     console.log("Saving");
-//   }
-//   if(select.clicked(x, y)){
-//     if(draw_all === 1){
-//       draw_all = 0;
-//       select.render(draw_str[1], 4*draw_str[1].length);
-//     } else{
-//       draw_all = 1;
-//       select.render(draw_str[0], 4*draw_str[0].length);
-//     }
-//   }
-// }
+function mousePressed(){
+  var x = Math.round(mouseX);
+  var y = Math.round(mouseY);
+  console.log(x);
+  console.log(y);
+  for(i = 0; i < figs.length; i++){
+    if(figs[i].clicked(x, y)){
+      figs[i].jatenho = !figs[i].jatenho;
+      if(figs[i].jatenho)
+        num++;
+      else
+        num--;
+    }
+  }
+  if(but.clicked(x, y)){
+    obtidas = []
+    n_obtidas = []
+    for(i = 0; i < figs.length; i++){
+      if(figs[i].jatenho == true){
+        obtidas.push(i);
+      } else{
+        n_obtidas.push(i);
+      }
+    }
+    // localStorage.setItem("obtidas", obtidas);
+    saveToFirebase(obtidas);
+    console.log("Saving");
+  }
+  if(select.clicked(x, y)){
+    if(draw_all === 1){
+      draw_all = 0;
+      select.render(draw_str[1], 4*draw_str[1].length);
+    } else{
+      draw_all = 1;
+      select.render(draw_str[0], 4*draw_str[0].length);
+    }
+  }
+}
 
 function saveToFirebase(obtidas) {
   var obtidasObject = {
