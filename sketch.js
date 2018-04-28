@@ -11,35 +11,34 @@ function Figurinha(n, x, y){
   this.jatenho = false;
   this.x = x;
   this.y = y;
+  this.real_x = x;
+  this.real_y = y;
 
-  this.render = function(x, y){
-    var real_x = this.x;
-    var real_y = this.y;
-    if(x && y){
-      real_x = x;
-      real_y = y;
-    }
+
+  this.render = function(x = this.x, y = this.y){
+    this.real_x = x;
+    this.real_y = y;
 
     var colorS = 180;
     rectMode(CENTER);
     fill(colorS, 70, 255);
     stroke(colorS, 255, 200);
-    rect(real_x, real_y, sx, sy)
+    rect(this.real_x, this.real_y, sx, sy)
     if(this.jatenho){
       colorS = (colorS+220)%360;
       rectMode(CORNERS);
       fill(colorS, 70, 255);
       noStroke();
-      rect(real_x-(sx/2)+1, real_y-(sy/2)+1, real_x+(sx/2), real_y+(sy/2));
+      rect(this.real_x-(sx/2)+1, this.real_y-(sy/2)+1, this.real_x+(sx/2), this.real_y+(sy/2));
     }
     fill(colorS, 255, 200);
     noStroke();
-    text(this.n, real_x, real_y);
+    text(this.n, this.real_x, this.real_y);
   }
 
   this.clicked = function(x, y){
-    if(x > (this.x-(sx/2)+1) && x <= (this.x+(sx/2)))
-      if(y > (this.y-(sy/2)+1) && y <= (this.y+(sy/2)))
+    if(x > (this.real_x-(sx/2)+1) && x <= (this.real_x+(sx/2)))
+      if(y > (this.real_y-(sy/2)+1) && y <= (this.real_y+(sy/2)))
         return true;
   }
 }
