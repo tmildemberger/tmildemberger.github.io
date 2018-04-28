@@ -102,13 +102,17 @@ function setup() {
       max_x = figs[i].x;
   }
   // localStorage.setItem("obtidas", obtidas);
-  obtidas = (localStorage.getItem("obtidas")).split(",");
-  for(i = 0; i < obtidas.length; i++){
-    if(figs[Number(obtidas[i])]){
-      figs[Number(obtidas[i])].jatenho = true;
-      num++;
+  obtidas = localStorage.getItem("obtidas"));
+  if(obtidas){
+    obtidas = obtidas.split(",");
+    for(i = 0; i < obtidas.length; i++){
+      if(figs[Number(obtidas[i])]){
+        figs[Number(obtidas[i])].jatenho = true;
+        num++;
+      }
     }
   }
+  
   var max_y = figs[figs.length-1].y;
   but = new Button(max_x+sx/2-w/8, max_y+2*sy, w/8, 2*sy, "Salvar");
 
