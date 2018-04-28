@@ -1,0 +1,193 @@
+var w = 800, h = 600;//40;
+
+var sx = 30, sy = 18;
+
+var figurinhas_por_linha = Math.floor((w-20)/(sx+1));
+
+var numero_de_figurinhas = 600;
+
+function Figurinha(n, x, y){
+  this.n = n;
+  this.jatenho = false;
+  this.x = x;
+  this.y = y;
+
+  this.render = function(x, y){
+    var real_x = this.x;
+    var real_y = this.y;
+    if(x && y){
+      real_x = x;
+      real_y = y;
+    }
+
+    var colorS = 180;
+    rectMode(CENTER);
+    fill(colorS, 70, 255);
+    stroke(colorS, 255, 200);
+    rect(real_x, real_y, sx, sy)
+    if(this.jatenho){
+      colorS = (colorS+220)%360;
+      rectMode(CORNERS);
+      fill(colorS, 70, 255);
+      noStroke();
+      rect(real_x-(sx/2)+1, real_y-(sy/2)+1, real_x+(sx/2), real_y+(sy/2));
+    }
+    fill(colorS, 255, 200);
+    noStroke();
+    text(this.n, real_x, real_y);
+  }
+
+  this.clicked = function(x, y){
+    if(x > (this.x-(sx/2)+1) && x <= (this.x+(sx/2)))
+      if(y > (this.y-(sy/2)+1) && y <= (this.y+(sy/2)))
+        return true;
+  }
+}
+
+function Button(x, y, sx, sy, txt){
+  this.x = x;
+  this.y = y;
+  this.sx = sx;
+  this.sy = sy;
+  this.txt = txt;
+
+  this.render = function(new_txt, new_sx=6*this.txt.length){
+    if(new_txt){
+      this.txt = new_txt;
+      this.sx = new_sx;
+    }
+    fill(200, 70, 255);
+    stroke(200, 200, 200);
+    rectMode(CORNER);
+    rect(this.x, this.y, this.sx, this.sy);
+    fill(200, 200, 200);
+    noStroke();
+    text(this.txt, this.x+(this.sx/2), this.y+(this.sy/2));
+  }
+
+  this.clicked = function(x, y){
+    if(x >= (this.x) && x <= (this.x+sx))
+      if(y >= (this.y) && y <= (this.y+sy))
+        return true;
+  }
+}
+
+var figs = [];
+var n_obtidas;
+var obtidas;// = [1, 4, 9, 12, 13, 16, 18, 20, 22, 26, 31, 32, 35, 36, 37, 40, 43, 45, 46, 47, 51, 53, 54, 58, 62, 63, 64, 67, 68, 70, 75, 77, 78, 79, 82, 83, 84, 86, 87, 89, 90, 93, 96, 98, 102, 103, 105, 106, 107, 110, 115, 116, 117, 118, 119, 121, 123, 124, 126, 129, 130, 131, 132, 133, 134, 136, 138, 139, 140, 141, 142, 143, 145, 146, 149, 151, 153, 155, 156, 157, 159, 160, 161, 162, 163, 164, 169, 170, 171, 173, 174, 175, 176, 177, 178, 179, 180, 182, 183, 190, 193, 194, 196, 197, 200, 201, 204, 205, 206, 209, 210, 213, 214, 218, 221, 222, 223, 226, 229, 230, 231, 232, 233, 235, 237, 241, 245, 246, 247, 249, 251, 252, 253, 254, 255, 256, 257, 258, 259, 261, 262, 266, 267, 268, 269, 270, 271, 272, 274, 276, 278, 280, 281, 285, 286, 289, 290, 291, 292, 293, 294, 295, 298, 299, 301, 302, 303, 306, 308, 309, 310, 314, 316, 318, 322, 323, 327, 328, 329, 330, 331, 333, 334, 335, 337, 339, 341, 343, 344, 348, 353, 354, 355, 356, 357, 359, 361, 363, 366, 367, 368, 372, 375, 377, 378, 381, 384, 387, 392, 393, 395, 396, 397, 399, 402, 404, 407, 410, 413, 415, 422, 423, 424, 425, 426, 430, 431, 435, 437, 439, 440, 441, 444, 445, 446, 448, 449, 451, 454, 455, 457, 459, 460, 461, 463, 464, 465, 466, 467, 470, 473, 476, 478, 481, 484, 486, 488, 490, 498, 500, 501, 502, 503, 505, 506, 510, 511, 513, 514, 516, 518, 522, 524, 530, 531, 533, 535, 537, 539, 541, 543, 544, 545, 546, 550, 553, 557, 559, 560, 564, 565, 568, 570, 573, 575, 579, 582, 583, 584, 585, 587, 592, 593, 595, 597, 601, 606, 609, 613, 617, 618, 620, 621, 623, 625, 626, 630, 631, 633, 636, 637, 640, 641, 643, 644, 645, 646, 649, 652, 654, 655, 656, 657, 658, 660, 664, 668, 670, 676, 677, 680, 681];
+var num = 0;
+var but;
+
+var faltantes;
+var falt_str = "Faltam x figurinhas";
+
+var temos;
+var tem_str = "Temos x figurinhas";
+
+var draw_all = 1;
+var draw_str = ["Mostrar todas as figurinhas <--\nMostrar figurinhas que faltam",
+"Mostrar todas as figurinhas\nMostrar figurinhas que faltam <--"];
+
+function setup() {
+  createCanvas(w, h);
+  colorMode(HSB, 360, 255, 255);
+  background(190, 50, 255);
+  textFont("Comic Sans");
+  textSize(12);
+  textAlign(CENTER, CENTER);
+  var max_x = 0;
+  for(i = 0; i < numero_de_figurinhas; i++){
+    figs.push(new Figurinha(i, 10+sx+((i%figurinhas_por_linha)*sx), (Math.floor((i/figurinhas_por_linha))*sy)+10+sy));
+    if(figs[i].x > max_x)
+      max_x = figs[i].x;
+  }
+  // localStorage.setItem("obtidas", obtidas);
+  obtidas = (localStorage.getItem("obtidas")).split(",");
+  for(i = 0; i < obtidas.length; i++){
+    if(figs[Number(obtidas[i])]){
+      figs[Number(obtidas[i])].jatenho = true;
+      num++;
+    }
+  }
+  var max_y = figs[figs.length-1].y;
+  but = new Button(max_x+sx/2-w/8, max_y+2*sy, w/8, 2*sy, "Salvar");
+
+  faltantes = new Button(10+sx/2, max_y+2*sy, 6*falt_str.length, sy, falt_str);
+  temos = new Button(10+sx/2, max_y+3*sy, 6*tem_str.length, sy, tem_str);
+
+  select = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length, max_y+2*sy, 4*draw_str[0].length,
+  2*sy, draw_str[0]);
+
+  obtidas = []
+  n_obtidas = []
+  for(i = 0; i < figs.length; i++){
+    if(figs[i].jatenho == true){
+      obtidas.push(i);
+    } else{
+      n_obtidas.push(i);
+    }
+  }
+}
+
+function draw() {
+  background(190, 50, 255);
+
+  if(draw_all === 1){
+    for(i = 0; i < numero_de_figurinhas; i++){
+      figs[i].render();
+    }
+  } else{
+    for(i = 0; i < n_obtidas.length; i++){
+      figs[n_obtidas[i]].render(figs[i].x, figs[i].y);
+    }
+  }
+
+  but.render();
+
+  falt_str = "Faltam " + (numero_de_figurinhas - num) + " figurinhas";
+  faltantes.render(falt_str);
+  tem_str = "Temos " + num + " figurinhas";
+  temos.render(tem_str);
+
+  select.render();
+  // console.log(num);
+  // noLoop();
+}
+
+function mousePressed(){
+  var x = Math.round(mouseX);
+  var y = Math.round(mouseY);
+  console.log(x);
+  console.log(y);
+  for(i = 0; i < figs.length; i++){
+    if(figs[i].clicked(x, y)){
+      figs[i].jatenho = !figs[i].jatenho;
+      if(figs[i].jatenho)
+        num++;
+      else
+        num--;
+    }
+  }
+  if(but.clicked(x, y)){
+    obtidas = []
+    n_obtidas = []
+    for(i = 0; i < figs.length; i++){
+      if(figs[i].jatenho == true){
+        obtidas.push(i);
+      } else{
+        n_obtidas.push(i);
+      }
+    }
+    localStorage.setItem("obtidas", obtidas);
+    console.log("Saving");
+  }
+  if(select.clicked(x, y)){
+    if(draw_all === 1){
+      draw_all = 0;
+      select.render(draw_str[1], 4*draw_str[1].length);
+    } else{
+      draw_all = 1;
+      select.render(draw_str[0], 4*draw_str[0].length);
+    }
+  }
+}
