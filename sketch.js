@@ -101,7 +101,7 @@ function setup() {
     if(figs[i].x > max_x)
       max_x = figs[i].x;
   }
-  saveToFirebase(obtidas);
+  // saveToFirebase(obtidas);
   // localStorage.setItem("obtidas", obtidas);
   // obtidas = localStorage.getItem("obtidas");
   firebase.database().ref('figurinhas-obtidas').once('value')
