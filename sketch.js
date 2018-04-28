@@ -102,7 +102,7 @@ function setup() {
       max_x = figs[i].x;
   }
   // localStorage.setItem("obtidas", obtidas);
-  obtidas = localStorage.getItem("obtidas"));
+  obtidas = localStorage.getItem("obtidas");
   if(obtidas){
     obtidas = obtidas.split(",");
     for(i = 0; i < obtidas.length; i++){
