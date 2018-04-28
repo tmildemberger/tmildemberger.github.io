@@ -4,7 +4,7 @@ var sx = 30, sy = 18;
 
 var figurinhas_por_linha = Math.floor((w-20)/(sx+1));
 
-var numero_de_figurinhas = 600;
+var numero_de_figurinhas = 682;
 
 function Figurinha(n, x, y){
   this.n = n;
