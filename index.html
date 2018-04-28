@@ -1,11 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
-    <style> body {padding: 0; margin: 0;} </style>
-    <script src="p5.min.js"></script>
-    <script src="sketch.js"></script>
-  </head>
-  <body>
-  </body>
+
+<head>
+  <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBc3kAssCEeGN6KN5APJbTvyf_kfORsz-8",
+      authDomain: "stickers-c9dd8.firebaseapp.com",
+      databaseURL: "https://stickers-c9dd8.firebaseio.com",
+      projectId: "stickers-c9dd8",
+      storageBucket: "",
+      messagingSenderId: "1079795413682"
+    };
+    firebase.initializeApp(config);
+  </script>
+  
+  <script src="p5.min.js"></script>
+  <script src="sketch.js"></script>
+</head>
+
+<body>
+</body>
+
 </html>
