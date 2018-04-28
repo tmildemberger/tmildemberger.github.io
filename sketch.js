@@ -105,7 +105,7 @@ function setup() {
   // obtidas = localStorage.getItem("obtidas");
   firebase.database().ref('figurinhas-obtidas').once('value')
     .then(function(snapshot){
-      obtidas = snapshot;
+      obtidas = snapshot.val();
       console.log(obtidas);
     }, function(error){console.log('error');})
   // if(obtidas){
