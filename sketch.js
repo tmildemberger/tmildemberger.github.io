@@ -176,13 +176,25 @@ function mousePressed(){
   var y = Math.round(mouseY);
   console.log(x);
   console.log(y);
-  for(i = 0; i < figs.length; i++){
-    if(figs[i].clicked(x, y)){
-      figs[i].jatenho = !figs[i].jatenho;
-      if(figs[i].jatenho)
-        num++;
-      else
-        num--;
+  if(draw_all === 1){
+    for(i = 0; i < figs.length; i++){
+      if(figs[i].clicked(x, y)){
+        figs[i].jatenho = !figs[i].jatenho;
+        if(figs[i].jatenho)
+          num++;
+        else
+          num--;
+      }
+    }
+  } else{
+    for(i = 0; i < n_obtidas.length; i++){
+      if(figs[n_obtidas[i]].clicked(x, y)){
+        figs[n_obtidas[i]].jatenho = !figs[n_obtidas[i]].jatenho;
+        if(figs[n_obtidas[i]].jatenho)
+          num++;
+        else
+          num--;
+      }
     }
   }
   if(but.clicked(x, y)){
