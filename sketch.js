@@ -51,7 +51,7 @@ function Button(x, y, sx, sy, txt){
   this.txt = txt;
 
   this.render = function(new_txt, new_sx=6*this.txt.length){
-    if(new_txt === null || new_txt === undefined){
+    if(new_txt !== null || new_txt !== undefined){
       this.txt = new_txt;
       this.sx = new_sx;
     }
