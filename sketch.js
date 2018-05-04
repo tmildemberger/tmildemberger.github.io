@@ -147,9 +147,9 @@ function setup() {
   select = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length, max_y+2*sy, 4*draw_str[0].length,
   2*sy, draw_str[0]);
 
-  box = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length-w/4-16, max_y+2*sy, w/4, sy, "");
+  box = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length-w/8-16, max_y+2*sy, w/8, sy, "");
 
-  bxbt = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length-w/4-16, max_y+3*sy, w/4, sy, "OK");
+  bxbt = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length-w/8-16, max_y+3*sy, w/8, sy, "OK");
 }
 
 function draw() {
@@ -256,6 +256,7 @@ function keyPressed(){
           num++;
           bxbt.render("Ñ tem", bxbt.sx);
         }
+        box.render("", box.sx);
       } else{
         bxbt.render("", bxbt.sx);
       }
@@ -267,7 +268,7 @@ function keyPressed(){
           box.render(box.txt.slice(0, box.txt.length-1), box.sx);
       }
     } else if(key >= '0' && key <= '9'){
-      if(box.txt.length <= 3){
+      if(box.txt.length < 3){
         box.render(box.txt + str(key), box.sx);
       }
     }
