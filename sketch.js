@@ -87,6 +87,8 @@ var draw_all = 1;
 var draw_str = ["Mostrar todas as figurinhas <--\nMostrar figurinhas que faltam",
 "Mostrar todas as figurinhas\nMostrar figurinhas que faltam <--"];
 
+var escrevendo = 0;
+
 function setup() {
   createCanvas(w, h);
   colorMode(HSB, 360, 255, 255);
@@ -144,6 +146,10 @@ function setup() {
 
   select = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length, max_y+2*sy, 4*draw_str[0].length,
   2*sy, draw_str[0]);
+
+  box = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length-w/4-16, max_y+2*sy, w/4, sy, "");
+
+  bxbt = new Button(max_x+sx/2-w/8-w/16-4*draw_str[0].length-w/4-16, max_y+3*sy, w/4, sy, "OK");
 }
 
 function draw() {
@@ -167,6 +173,9 @@ function draw() {
   temos.render(tem_str);
 
   select.render();
+
+  box.render();
+  bxbt.render();
   // // console.log(num);
   // // noLoop();
 }
@@ -210,7 +219,11 @@ function mousePressed(){
     // localStorage.setItem("obtidas", obtidas);
     saveToFirebase(obtidas);
     console.log("Saving");
+    but.render("Salvo", but.sx);
+  } else{
+    but.render("Salvar", but.sx);
   }
+
   if(select.clicked(x, y)){
     if(draw_all === 1){
       draw_all = 0;
@@ -220,6 +233,44 @@ function mousePressed(){
       select.render(draw_str[0], 4*draw_str[0].length);
     }
   }
+
+  if(box.clicked(x, y)){
+    escrevendo = 1;
+  } else if (!(bxbt.clicked(x, y))){
+    escrevendo = 0;
+  }
+
+  if(bxbt.clicked(x, y)){
+    bxbt.render("", bxbt.sx);
+  }
+}
+
+function keyPressed(){
+  if(escrevendo === 1){
+    if(keyCode === ENTER){
+      if(int(box.txt) >= 0 && int(box.txt) < 682){
+        if(figs[i].jatenho === true){
+          bxbt.render("Tem", bxbt.sx);
+        } else{
+          figs[i].jatenho = true;
+          num++;
+          bxbt.render("Ñ tem", bxbt.sx);
+        }
+      } else{
+        bxbt.render("", bxbt.sx);
+      }
+    } else if(keyCode === BACKSPACE){
+      if(box.txt !== ""){
+        box.render(box.txt.slice(0, box.txt.length-1), box.sx);
+      }
+    } else if(key >= '0' && key <= '9'){
+      if(box.txt.length <= 3){
+        box.render(box.txt + str(key), box.sx);
+      }
+    }
+  }
+  
+  return false;
 }
 
 function saveToFirebase(obtidas) {
