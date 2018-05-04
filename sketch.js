@@ -51,7 +51,7 @@ function Button(x, y, sx, sy, txt){
   this.txt = txt;
 
   this.render = function(new_txt, new_sx=6*this.txt.length){
-    if(new_txt){
+    if(new_txt === null || new_txt === undefined){
       this.txt = new_txt;
       this.sx = new_sx;
     }
@@ -261,7 +261,10 @@ function keyPressed(){
       }
     } else if(keyCode === BACKSPACE){
       if(box.txt !== ""){
-        box.render(box.txt.slice(0, box.txt.length-1), box.sx);
+        // if(box.txt.length === 1)
+        //   box.render("", box.sx);
+        // else
+          box.render(box.txt.slice(0, box.txt.length-1), box.sx);
       }
     } else if(key >= '0' && key <= '9'){
       if(box.txt.length <= 3){
