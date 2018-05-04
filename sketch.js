@@ -249,10 +249,10 @@ function keyPressed(){
   if(escrevendo === 1){
     if(keyCode === ENTER){
       if(int(box.txt) >= 0 && int(box.txt) < 682){
-        if(figs[i].jatenho === true){
+        if(figs[int(box.txt)].jatenho === true){
           bxbt.render("Tem", bxbt.sx);
         } else{
-          figs[i].jatenho = true;
+          figs[int(box.txt)].jatenho = true;
           num++;
           bxbt.render("Ñ tem", bxbt.sx);
         }
