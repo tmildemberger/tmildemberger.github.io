@@ -269,8 +269,6 @@ function keyPressed(){
       }
     }
   }
-  
-  return false;
 }
 
 function saveToFirebase(obtidas) {
